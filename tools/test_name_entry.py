@@ -32,7 +32,7 @@ with sync_playwright() as p:
  page.locator('[data-close="heroes"]').click();page.reload();page.wait_for_function('window.gameReady')
  assert records()[0]=={'name':'测试舰长','score':50000}
  before=records();qualify(60000)
- assert page.locator('#entryName').input_value()=='测试舰长'
+ assert page.locator('#entryName').input_value()==''
  page.locator('#cancelEntry').click();page.wait_for_function('!ship.cpu.suspended')
  assert records()==before and page.evaluate('ship.cpu.r[4]===0xf00000')
  page.locator('#start').click();qualify(70000);page.keyboard.press('Escape');page.wait_for_function('!ship.cpu.suspended')
