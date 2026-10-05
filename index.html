@@ -6,6 +6,9 @@
 <title>潜艇大战 V2.33</title>
 <link rel="icon" href="favicon.ico">
 <style>
+.tuning-group{padding:16px;border:1px solid #b9cbd4;border-radius:6px;background:#eef5f7;margin:20px 0}.tuning-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.tuning-heading h3{margin:0;color:#145d76;font-size:17px}.tuning-toggle{display:flex;align-items:center;gap:8px;font-weight:700;margin:12px 0}.tuning-fields{border:0;padding:0;margin:0}.tuning-fields:disabled{opacity:.55}.tuning-fields small{font-weight:400;color:#55717e;font-size:12px;line-height:1.5}.tuning-group .help-note{margin:12px 0 0}.options-error{color:#a62b3b;font-weight:700;margin:8px 0 0}
+#scoreEntry{width:min(420px,calc(100vw - 24px))}#entryForm{display:flex;flex-direction:column;min-height:0}.entry-summary{margin:0 0 20px;color:#526875}.entry-summary strong{display:block;font-size:32px;font-weight:800;color:#145d76;font-variant-numeric:tabular-nums}.entry-label{display:block;font-weight:700;margin-bottom:8px}.entry-input{width:100%;padding:11px 12px;font:16px "Microsoft YaHei",sans-serif;color:#183f54;background:white;border:1px solid #9cb5c1;border-radius:5px}.entry-input:focus{outline:2px solid #16859e;outline-offset:2px}.entry-error{color:#a62b3b;font-size:13px;margin:10px 0 0}
+
 .panel{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #9bafb9;border-radius:8px;background:#f7fafb;color:#263d4b;overflow:hidden;box-shadow:0 24px 80px #0007}
 .panel[open]{display:flex;flex-direction:column}.panel::backdrop{background:#03131ccc}.panel h2{margin:0;font-size:22px;color:#fff;background:#123f54;padding:16px 22px}.panel .content{overflow:auto;padding:20px 22px;min-height:0}.panel .footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 22px;border-top:1px solid #d7e2e7;background:#edf3f6;flex-wrap:wrap}.panel button{border:1px solid #9bafb9;border-radius:4px;padding:8px 14px;background:white}.panel .primary{background:#145d76;color:white}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-grid label{display:flex;flex-direction:column;gap:6px;font-weight:700}.form-grid input,.form-grid select{width:100%;padding:8px;background:#fff;border:1px solid #b9cbd4;border-radius:4px;color:#183f54;font:14px inherit}.form-grid .check{flex-direction:row;align-items:center}.form-grid .check input{width:auto}.panel p{line-height:1.65}.key-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key-fields label{font-size:13px}.key-fields input{width:100%;text-align:center;padding:7px;background:#fff;border:1px solid #b9cbd4;border-radius:4px}.settings-group{border:0;margin:18px 0 0;padding:0}.settings-group legend{font-weight:700;color:#145d76;margin-bottom:9px}.score-table{width:100%;border-collapse:collapse;font-size:13px}.score-table th{text-align:left;background:#e4edf2;color:#145d76}.score-table th,.score-table td{padding:9px 6px;border-bottom:1px solid #d7e2e7}.toast{color:#ffd884;text-align:center;margin:0;font-size:12px;min-height:18px}.bottom{flex-wrap:wrap}.touch{flex-wrap:wrap}.touch button{min-width:46px;padding:4px 8px}@media(max-width:420px){.form-grid{grid-template-columns:1fr}.key-fields{grid-template-columns:repeat(2,1fr)}.panel .content{padding:16px}.score-table th,.score-table td{padding:6px 3px;font-size:11px}}
 
@@ -21,7 +24,7 @@ button:hover,button:focus-visible{border-color:#fff #808080 #808080 #fff;outline
 button:active{border-color:#808080 #fff #fff #808080}
 #fullscreen{margin-left:auto}
 .arena{flex:1;min-height:0;overflow:hidden;background:#081820;display:flex;align-items:center;justify-content:center}
-canvas{display:block;flex:none;image-rendering:pixelated;touch-action:none;outline:none;background:#00ffff}
+canvas{display:block;flex:none;image-rendering:pixelated;touch-action:none;outline:none;background:#081820}
 .bottom{flex:none;display:flex;justify-content:space-between;gap:8px;color:#1b2328;font-size:12px;line-height:18px;padding:4px 8px;border:1px inset #eee;font-variant-numeric:tabular-nums}
 .keys{text-align:center;font-size:12px;color:#abc0ca;margin:0;line-height:20px;flex:none}
 kbd{font:inherit;color:#eef5f7}
@@ -121,7 +124,7 @@ main:fullscreen{background:#10232d;padding:8px}
         <li><strong>第 11–21 关</strong><span>加入空中战场与向上发射</span></li>
         <li><strong>通过第 21 关</strong><span>进入下一轮</span></li>
       </ol>
-      <p class="help-note">敌人、补给、碰撞、得分和过关条件沿用 V2.33 原版规则。设置中的“从此关开始”会重新开始一局。</p>
+      <p class="help-note">敌人、补给、碰撞、得分和过关条件沿用 V2.33 原版规则。设置中的“从此关开始”会重新开始一局。启用自定义玩法后，可调整生命、炸弹上限、横排投弹、移动速度和无敌时长。</p>
     </section>
   </div>
   <footer class="help-footer"><button id="closeHelp">知道了</button></footer>
@@ -129,12 +132,37 @@ main:fullscreen{background:#10232d;padding:8px}
 <dialog id="options" class="panel" aria-labelledby="optionsTitle">
 <h2 id="optionsTitle">游戏设置</h2><div class="content">
 <div class="form-grid"><label>起始关卡<select id="startLevel"></select></label><label>游戏速度<select id="speed"><option value="31">原版默认 · 31 毫秒</option></select></label><label>英雄榜名称（最多 6 个汉字）<input id="playerName" maxlength="12" value="Player" autocomplete="nickname"></label><label class="check"><input id="useMouse" type="checkbox" checked>使用鼠标控制</label></div>
+<section class="tuning-group" aria-labelledby="tuningTitle">
+<div class="tuning-heading"><h3 id="tuningTitle">玩法参数</h3><button id="resetRules" type="button">恢复原版参数</button></div>
+<label class="tuning-toggle"><input id="customRules" type="checkbox">启用自定义玩法</label>
+<fieldset id="tuningFields" class="tuning-fields" disabled><div class="form-grid">
+<label>深水炸弹上限<input id="bombLimit" data-rule="bombLimit" type="number" min="1" max="100" step="1" required><small>1–100 枚 · 可同时在场的数量</small></label>
+<label>每次横排投弹数量<input id="volley" data-rule="volley" type="number" min="1" max="100" step="1" required><small>1–100 枚 · 空格、Z / X 或鼠标单击</small></label>
+<label>横排弹药间距<input id="spacing" data-rule="spacing" type="number" min="4" max="80" step="1" required><small>4–80 像素 · 超出战场宽度时自动收紧</small></label>
+<label>生命数量<input id="lives" data-rule="lives" type="number" min="1" max="999" step="1" required><small>1–999 次 · 修改后设置当前生命</small></label>
+<label>左右移动速度<input id="moveSpeed" data-rule="moveSpeed" type="number" min="1" max="40" step="1" required><small>1–40 像素 / 帧 · 原版为 5</small></label>
+<label>开局 / 复活无敌时长<input id="respawnSeconds" data-rule="respawnSeconds" type="number" min="0" max="600" step="0.01" required><small>0–600 秒 · 0 表示不保护</small></label>
+<label>金钟罩无敌时长<input id="shieldSeconds" data-rule="shieldSeconds" type="number" min="0" max="600" step="0.01" required><small>0–600 秒 · 拾取金钟罩后生效</small></label>
+<label class="check"><input id="invincible" type="checkbox">持续无敌</label>
+</div></fieldset><p class="help-note">弹药不足时只投放剩余额度。参数在应用后生效，并保留到下一局；暂停时无敌计时停止。</p>
+</section>
 <fieldset class="settings-group"><legend>键位 · 点击后按下新按键</legend><div class="key-fields"><label>左移<input data-offset="620" readonly></label><label>右移<input data-offset="624" readonly></label><label>左侧投弹<input data-offset="628" readonly></label><label>中间投弹<input data-offset="632" readonly></label><label>右侧投弹<input data-offset="636" readonly></label><label>向上发射<input data-offset="640" readonly></label><label>核武器<input data-offset="772" readonly></label></div></fieldset>
 <fieldset class="settings-group"><legend>战场颜色</legend><div class="form-grid"><label>天空上端<input type="color" data-color="660"></label><label>天空下端<input type="color" data-color="664"></label><label>海面上端<input type="color" data-color="656"></label><label>海底下端<input type="color" data-color="652"></label></div></fieldset>
-<p class="help-note">起始关卡在“从此关开始”时生效。存档保存在此浏览器中，也可导出到文件。</p></div>
+<p id="optionsError" class="options-error" role="alert" hidden></p>
+<p class="help-note">应用后，“开始”和 F2 从所选关卡开始；“从此关开始”会立即重新开始一局。存档保存在此浏览器中，也可导出到文件。</p></div>
 <div class="footer"><button id="exportSave">导出存档</button><button id="importSave">导入存档</button><button id="applySettings" class="primary">应用设置</button><button id="startSelected">从此关开始</button><button data-close="options">关闭</button></div></dialog>
 <dialog id="heroes" class="panel" aria-labelledby="heroesTitle"><h2 id="heroesTitle">英雄榜</h2><div class="content"><table class="score-table"><thead><tr><th>名次</th><th>名称</th><th>得分</th><th>过关</th><th>消灭</th><th>日期</th></tr></thead><tbody id="scoreRows"></tbody></table></div><div class="footer"><button data-close="heroes" class="primary">关闭</button></div></dialog>
+<dialog id="scoreEntry" class="panel" aria-labelledby="entryTitle">
+<h2 id="entryTitle">登上英雄榜</h2>
+<form id="entryForm" novalidate><div class="content">
+<p class="entry-summary">本次得分 <strong id="entryScore"></strong></p>
+<label for="entryName" class="entry-label">你的名字</label>
+<input id="entryName" class="entry-input" maxlength="12" autocomplete="nickname" aria-describedby="entryHint entryError" autofocus>
+<p id="entryHint" class="help-note">最多 6 个汉字或 12 个英文字母。</p>
+<p id="entryError" class="entry-error" role="alert" hidden></p>
+</div><div class="footer"><button type="button" id="cancelEntry">不记录</button><button type="submit" class="primary">保存成绩</button></div></form>
+</dialog>
 <input id="saveFile" type="file" accept=".mine" hidden>
-<script src="resources.js"></script><script src="audio-data.js"></script><script src="machine.js"></script><script src="cpu.js"></script><script src="bridge.js"></script><script src="game.js"></script>
+<script src="resources.js"></script><script src="audio-data.js"></script><script src="machine.js"></script><script src="cpu.js"></script><script src="bridge.js"></script><script src="tuning.js"></script><script src="game.js"></script>
 </body>
 </html>

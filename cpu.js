@@ -6,7 +6,7 @@ class ShipCPU {
   this.memory=new Uint8Array(0x1000000);this.view=new DataView(this.memory.buffer);
   for(const [address,b64] of machine.sections){const b=atob(b64);for(let i=0;i<b.length;i++)this.memory[address+i]=b.charCodeAt(i);}
   this.code=new Map(machine.code.map(i=>[i[0],i]));this.hooks=new Map();this.r=new Uint32Array(8);
-  this.r[4]=0xf00000;this.pc=0;this.flags={c:0,z:0,s:0,o:0,p:0};this.heap=0x600000;this.freeBlocks=[];this.blocks=new Map();this.seed=1;this.trace=[];this.fpu=[];this.fpStatus=0;this.fpControl=0x37f;
+  this.r[4]=0xf00000;this.pc=0;this.suspended=false;this.flags={c:0,z:0,s:0,o:0,p:0};this.heap=0x600000;this.freeBlocks=[];this.blocks=new Map();this.seed=1;this.trace=[];this.fpu=[];this.fpStatus=0;this.fpControl=0x37f;
  }
  read(a,size=4){a>>>=0;if(a+size>this.memory.length)throw Error('Memory read '+a.toString(16));return size===1?this.view.getUint8(a):size===2?this.view.getUint16(a,true):this.view.getUint32(a,true);}
  write(a,v,size=4){a>>>=0;if(a+size>this.memory.length)throw Error('Memory write '+a.toString(16));if(size===1)this.view.setUint8(a,v);else if(size===2)this.view.setUint16(a,v,true);else this.view.setUint32(a,v,true);}
@@ -24,8 +24,12 @@ class ShipCPU {
  arithmetic(a,b,size,sub=false,carry=0){const bits=size*8,max=size===4?4294967296:2**bits,mask=max-1;a>>>=0;b>>>=0;a%=max;b%=max;const value=sub?a-b-carry:a+b+carry,result=((value%max)+max)%max;const sign=2**(bits-1);this.flag(result,size,sub?a<b+carry:value>=max,sub?((a^b)&(a^result)&sign):(~(a^b)&(a^result)&sign));return result;}
  cond(c){const f=this.flags;return ({e:f.z,z:f.z,ne:!f.z,nz:!f.z,b:f.c,c:f.c,nae:f.c,ae:!f.c,nb:!f.c,nc:!f.c,be:f.c||f.z,na:f.c||f.z,a:!f.c&&!f.z,nbe:!f.c&&!f.z,l:f.s!==f.o,nge:f.s!==f.o,ge:f.s===f.o,nl:f.s===f.o,le:f.z||f.s!==f.o,ng:f.z||f.s!==f.o,g:!f.z&&f.s===f.o,nle:!f.z&&f.s===f.o,s:f.s,ns:!f.s,o:f.o,no:!f.o,p:f.p,pe:f.p,np:!f.p,po:!f.p})[c];}
  run(address,thisPtr=0,args=[],limit=3000000){
-  this.r[1]=thisPtr;for(let i=args.length-1;i>=0;i--)this.push(args[i]);this.push(0);this.pc=address;let count=0;
-  while(this.pc){if(++count>limit)throw Error('Instruction budget at '+this.pc.toString(16));this.step();}return this.r[0];
+  if(this.suspended)throw Error('游戏正在等待名字输入');
+  this.r[1]=thisPtr;for(let i=args.length-1;i>=0;i--)this.push(args[i]);this.push(0);this.pc=address;return this.resume(limit);
+ }
+ resume(limit=3000000){
+  let count=0;
+  while(this.pc&&!this.suspended){if(++count>limit)throw Error('Instruction budget at '+this.pc.toString(16));this.step();}return this.r[0];
  }
  step(){
   const pc=this.pc;if(this.hooks.has(pc)){this.hooks.get(pc)(this);return;}

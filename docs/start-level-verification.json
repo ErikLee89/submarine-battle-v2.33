@@ -1,0 +1,11 @@
+{
+  "result": "pass",
+  "applyDoesNotRestart": "pass",
+  "startButtonAndF2": "pass",
+  "reload": "pass",
+  "cancelDoesNotApply": "pass",
+  "pausedSettings": "pass",
+  "restartAfterEnd": "pass",
+  "startSelectedAndCustomParameters": "pass",
+  "pageErrors": []
+}

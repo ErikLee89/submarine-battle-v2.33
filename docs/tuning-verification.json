@@ -1,0 +1,143 @@
+{
+  "result": "pass",
+  "cases": [
+    {
+      "case": "60-capacity-horizontal-volley-native-motion",
+      "result": "pass"
+    },
+    {
+      "case": "movement-15-and-custom-save",
+      "result": "pass"
+    },
+    {
+      "case": "active-projectile-save-reload",
+      "result": "pass"
+    },
+    {
+      "case": "protection-pause-and-speed-change",
+      "result": "pass"
+    },
+    {
+      "case": "timed-protection-native-life-loss-respawn-shield-pickup-and-slot99-collision",
+      "result": "pass"
+    },
+    {
+      "case": "permanent-invulnerability-remaining-ammo-and-capacity-reduction",
+      "result": "pass"
+    },
+    {
+      "case": "custom-stage-1",
+      "result": "pass",
+      "score": 180
+    },
+    {
+      "case": "custom-stage-2",
+      "result": "pass",
+      "score": 250
+    },
+    {
+      "case": "custom-stage-3",
+      "result": "pass",
+      "score": 200
+    },
+    {
+      "case": "custom-stage-4",
+      "result": "pass",
+      "score": 410
+    },
+    {
+      "case": "custom-stage-5",
+      "result": "pass",
+      "score": 700
+    },
+    {
+      "case": "custom-stage-6",
+      "result": "pass",
+      "score": 410
+    },
+    {
+      "case": "custom-stage-7",
+      "result": "pass",
+      "score": 380
+    },
+    {
+      "case": "custom-stage-8",
+      "result": "pass",
+      "score": 1210
+    },
+    {
+      "case": "custom-stage-9",
+      "result": "pass",
+      "score": 1310
+    },
+    {
+      "case": "custom-stage-10",
+      "result": "pass",
+      "score": 770
+    },
+    {
+      "case": "custom-stage-11",
+      "result": "pass",
+      "score": 2760
+    },
+    {
+      "case": "custom-stage-12",
+      "result": "pass",
+      "score": 1830
+    },
+    {
+      "case": "custom-stage-13",
+      "result": "pass",
+      "score": 2610
+    },
+    {
+      "case": "custom-stage-14",
+      "result": "pass",
+      "score": 1780
+    },
+    {
+      "case": "custom-stage-15",
+      "result": "pass",
+      "score": 2930
+    },
+    {
+      "case": "custom-stage-16",
+      "result": "pass",
+      "score": 4510
+    },
+    {
+      "case": "custom-stage-17",
+      "result": "pass",
+      "score": 5180
+    },
+    {
+      "case": "custom-stage-18",
+      "result": "pass",
+      "score": 4760
+    },
+    {
+      "case": "custom-stage-19",
+      "result": "pass",
+      "score": 7510
+    },
+    {
+      "case": "custom-stage-20",
+      "result": "pass",
+      "score": 13540
+    },
+    {
+      "case": "custom-stage-21",
+      "result": "pass",
+      "score": 8870
+    },
+    {
+      "case": "custom-export-import-fresh-browser",
+      "result": "pass"
+    },
+    {
+      "case": "limits-responsive-dialog-and-original-reset",
+      "result": "pass"
+    }
+  ],
+  "pageErrors": []
+}

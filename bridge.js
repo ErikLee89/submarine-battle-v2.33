@@ -8,7 +8,7 @@ class ShipBridge {
  context(h){return this.dc(h).ctx;}
  bytes(a){let e=a;while(this.cpu.memory[e]&&e-a<65536)e++;return this.cpu.memory.slice(a,e);}
  str(a){return this.decoder.decode(this.bytes(a));}
- nameBytes(){const out=[];for(const char of this.playerName||'Player'){let bytes;if(char.charCodeAt(0)<128)bytes=[char.charCodeAt(0)];else{if(!this.nameMap){this.nameMap=new Map();for(let a=0x81;a<=0xfe;a++)for(let b=0x40;b<=0xfe;b++){if(b===0x7f)continue;const pair=new Uint8Array([a,b]),text=this.decoder.decode(pair);if(text.length===1&&!this.nameMap.has(text))this.nameMap.set(text,[a,b]);}}bytes=this.nameMap.get(char)||[63];}if(out.length+bytes.length>12)break;out.push(...bytes);}return new Uint8Array(out);}
+ nameBytes(name=this.playerName||'Player'){const out=[];for(const char of name){let bytes;if(char.charCodeAt(0)<128)bytes=[char.charCodeAt(0)];else{if(!this.nameMap){this.nameMap=new Map();for(let a=0x81;a<=0xfe;a++)for(let b=0x40;b<=0xfe;b++){if(b===0x7f)continue;const pair=new Uint8Array([a,b]),text=this.decoder.decode(pair);if(text.length===1&&!this.nameMap.has(text))this.nameMap.set(text,[a,b]);}}bytes=this.nameMap.get(char)||[63];}if(out.length+bytes.length>12)break;out.push(...bytes);}return new Uint8Array(out);}
  string(bytes){const p=this.cpu.alloc(bytes.length+16)+12;this.cpu.write(p-12,1);this.cpu.write(p-8,bytes.length);this.cpu.write(p-4,bytes.length);this.cpu.memory.set(bytes,p);return p;}
  assign(obj,bytes){const c=this.cpu,old=c.read(obj);c.write(obj,this.string(bytes));if(old>=0x60000c)c.free(old-12);return obj;}
  color(v){return `rgb(${v&255},${(v>>>8)&255},${(v>>>16)&255})`;}
@@ -29,7 +29,7 @@ class ShipBridge {
   hook(0x4133c3,0,()=>0x512000);c.write(0x512014,1);Object.defineProperty(c,'seed',{get:()=>c.read(0x512014),set:v=>c.write(0x512014,v)});
   hook(0x410b49,0,()=>Math.floor(Date.now()/1000));
   hook(0x410410,0,c=>{c.memory.fill(c.arg(1)&255,c.arg(0),c.arg(0)+c.arg(2));return c.arg(0);});
-  hook(0x421978,4,c=>this.assign(c.r[1],this.bytes(c.arg(0))));hook(0x4216c3,4,c=>this.assign(c.r[1],this.bytes(c.read(c.arg(0)))));
+  hook(0x421978,4,c=>this.assign(c.r[1],[0x4038e4,0x4038f8].includes(c.read(c.r[4]))?new Uint8Array():this.bytes(c.arg(0))));hook(0x4216c3,4,c=>this.assign(c.r[1],this.bytes(c.read(c.arg(0)))));
   hook(0x4219f7,4,c=>this.assign(c.r[1],this.bytes(c.read(c.arg(0)))));hook(0x421a47,4,c=>this.assign(c.r[1],this.bytes(c.arg(0))));
   hook(0x42194e,0,c=>{const p=c.read(c.r[1]);if(p>=0x60000c)c.free(p-12);return 0;});
   hook(0x421b20,4,c=>{const a=this.bytes(c.read(c.r[1])),b=this.bytes(c.read(c.arg(0)));return this.assign(c.r[1],new Uint8Array([...a,...b]));});
@@ -38,7 +38,7 @@ class ShipBridge {
   hook(0x410d99,0,c=>{c.fpu.unshift(Math.pow(c.view.getFloat64(c.r[4]+4,true),c.view.getFloat64(c.r[4]+12,true)));return 0;});
   hook(0x41be9b,0,()=>1);
   hook(0x41dc7f,8,c=>{c.write(c.r[1]+0x58,c.arg(0));return c.r[1];});nop(0x41e22f);nop(0x41cd92);nop(0x41cd21);nop(0x41e278);nop(0x41ce3c);nop(0x425471);
-  hook(0x41dd34,0,c=>{if(c.read(c.r[1]+0x58)===0x8f){this.assign(c.r[1]+0x100,this.nameBytes());return 1;}this.showScores=true;return 2;});
+  c.hooks.set(0x41dd34,c=>{if(c.read(c.r[1]+0x58)===0x8f){this.pendingName={dialog:c.r[1]};c.suspended=true;return;}this.showScores=true;c.ret(0,2);});
   hook(0x41c542,0,c=>{c.write(c.arg(0),Math.floor(Date.now()/1000));return c.arg(0);});
   hook(0x41c555,4,()=>{const d=new Date(),p=0x513000;[d.getDate(),d.getMonth(),d.getFullYear()-1900].forEach((v,i)=>c.write(p+12+i*4,v));return p;});
   hook(0x41d08a,0,c=>{c.write(c.r[1]+4,c.alloc(4096));c.write(c.r[1]+8,0);return c.r[1];});
@@ -98,19 +98,21 @@ class ShipBridge {
   this.messages=[];
   SHIP_MACHINE.imports.forEach(([iat,name],i)=>{const address=0x700000+i*16;c.write(iat,address);if(api[name])hook(address,...api[name]);else c.hooks.set(address,()=>{throw Error('Unimplemented service '+name+' from '+c.read(c.r[4]).toString(16));});});
  }
- line(h,x,y){const dc=this.dc(h),ctx=dc.ctx;ctx.strokeStyle=dc.pen?.color||'#000';ctx.lineWidth=dc.pen?.width||1;ctx.beginPath();ctx.moveTo(dc.point?.[0]||0,dc.point?.[1]||0);ctx.lineTo(x,y);ctx.stroke();dc.point=[x,y];}
+ line(h,x,y){const dc=this.dc(h),ctx=dc.ctx;ctx.strokeStyle=dc.pen?.color||'#000';ctx.lineWidth=dc.pen?.width||1;const [px,py]=dc.point||[0,0],width=dc.pen?.width||1;ctx.fillStyle=ctx.strokeStyle;if(py===y)ctx.fillRect(Math.min(px,x),y-Math.floor(width/2),Math.abs(x-px),width);else if(px===x)ctx.fillRect(x-Math.floor(width/2),Math.min(py,y),width,Math.abs(y-py));else{ctx.beginPath();ctx.moveTo(px+.5,py+.5);ctx.lineTo(x+.5,y+.5);ctx.stroke();}dc.point=[x,y];}
  drawText(h,x,y,p,n){const dc=this.dc(h),ctx=dc.ctx;ctx.font=dc.font||'14px SimSun,serif';ctx.fillStyle=dc.textColor||'#000';ctx.textBaseline='top';ctx.textAlign=(dc.align&6)===6?'center':(dc.align&2)?'right':'left';ctx.fillText(this.decoder.decode(this.cpu.memory.slice(p,p+n)),x,y);}
- format(c){const fmt=this.bytes(c.arg(1)),out=[];let arg=2;for(let i=0;i<fmt.length;i++){if(fmt[i]!==37){out.push(fmt[i]);continue;}let j=i+1;while(j<fmt.length&&!['d','u','s','x','X','c','%'].includes(String.fromCharCode(fmt[j])))j++;const type=String.fromCharCode(fmt[j]);if(type==='%'){out.push(37);i=j;continue;}const v=c.arg(arg++),spec=String.fromCharCode(...fmt.slice(i+1,j)),width=+(spec.match(/\.(\d+)/)?.[1]||spec.match(/^(\d+)/)?.[1]||0);let bytes;if(type==='s')bytes=this.bytes(v);else{let str=type==='d'?String(v|0):type==='x'||type==='X'?v.toString(16):type==='c'?String.fromCharCode(v&255):String(v);if(type==='X')str=str.toUpperCase();str=str.padStart(width,spec.includes('.')||spec.startsWith('0')?'0':' ');bytes=new TextEncoder().encode(str);}out.push(...bytes);i=j;}return new Uint8Array(out);}
- initialize(){const c=this.cpu;c.run(0x4024c8,this.game);c.write(this.game+0x1c,1);c.run(0x40368c,this.game,[0]);c.run(0x409f8c,this.game);this.frame();}
- frame(){this.clock+=this.cpu.read(this.game+0x308)||31;this.cpu.run(0x4046c7,this.game);this.stats.frames++;while(this.messages.length){const [msg,a,b]=this.messages.shift();if(msg===0x111){const fn={0x8000:0x409f8c,0x8001:0x40a1eb,0x8002:0x40ac5a,0x8022:0x40eb18,0x8023:0x40eace,0x8024:0x40eaf3}[a];if(fn)this.cpu.run(fn,this.game);}else if(msg===0x7001)this.cpu.run(0x40aa8d,this.game,[a,b]);}}
- keyDown(vk){const fn={113:0x409f8c,114:0x40a1eb,116:0x40c142}[vk];if(fn)this.cpu.run(fn,this.game);else this.cpu.run(0x40a5a9,this.game,[vk,1,0]);}
+ format(c){const fmt=this.bytes(c.arg(1)),out=[];let arg=2;for(let i=0;i<fmt.length;i++){if(fmt[i]!==37){out.push(fmt[i]);continue;}let j=i+1;while(j<fmt.length&&!['d','u','s','x','X','c','%'].includes(String.fromCharCode(fmt[j])))j++;const type=String.fromCharCode(fmt[j]);if(type==='%'){out.push(37);i=j;continue;}const v=c.arg(arg++),spec=String.fromCharCode(...fmt.slice(i+1,j)),width=+(spec.match(/\.(\d+)/)?.[1]||spec.match(/^(\d+)/)?.[1]||0);let bytes;if(type==='s')bytes=this.bytes(v);else{let str=type==='d'?String(v|0):type==='x'||type==='X'?v.toString(16):type==='c'?String.fromCharCode(v&255):String(v);if(type==='X')str=str.toUpperCase();str=str.padStart(width,spec.includes('.')||spec.startsWith('0')?'0':' ');if(this.savingCustom&&width&&(type==='x'||type==='X'))str=str.slice(-width);bytes=new TextEncoder().encode(str);}out.push(...bytes);i=j;}return new Uint8Array(out);}
+ initialize(){const c=this.cpu;c.run(0x4024c8,this.game);c.write(this.game+0x1c,1);c.run(0x40368c,this.game,[0]);c.run(0x409f8c,this.game);this.tuning=new ShipTuning(this);this.frame();}
+ frame(){if(this.cpu.suspended)return;this.clock+=this.cpu.read(this.game+0x308)||31;this.cpu.run(0x4046c7,this.game);this.stats.frames++;while(this.messages.length&&!this.cpu.suspended){const [msg,a,b]=this.messages.shift();if(msg===0x111){const fn={0x8000:0x409f8c,0x8001:0x40a1eb,0x8002:0x40ac5a,0x8022:0x40eb18,0x8023:0x40eace,0x8024:0x40eaf3}[a];if(fn)this.cpu.run(fn,this.game);}else if(msg===0x7001)this.cpu.run(0x40aa8d,this.game,[a,b]);}}
+ completeName(name){const pending=this.pendingName;if(!pending)return;const c=this.cpu;this.pendingName=null;if(name!==null){this.playerName=name;this.assign(pending.dialog+0x100,this.nameBytes(name));}c.suspended=false;c.ret(0,name===null?2:1);c.resume();}
+ keyDown(vk){const fn={113:0x409f8c,114:0x40a1eb,116:0x40c142}[vk];if(fn)this.cpu.run(fn,this.game);else{const run=()=>this.cpu.run(0x40a5a9,this.game,[vk,1,0]);if([0x274,0x278,0x27c].some(offset=>this.cpu.read(this.game+offset)===vk))this.tuning.fire(run);else run();}}
  keyUp(vk){this.cpu.run(0x40a9d6,this.game,[vk,1,0]);}
- mouse(x,y,click=false,right=false){this.cpu.run(right?0x40bf76:click?0x40457f:0x40aa54,this.game,[0,Math.round(x),Math.round(y)]);}
+ mouse(x,y,click=false,right=false){const run=()=>this.cpu.run(right?0x40bf76:click?0x40457f:0x40aa54,this.game,[0,Math.round(x),Math.round(y)]);if(click&&!right)this.tuning.fire(run);else run();}
  end(){this.cpu.run(0x40ac5a,this.game);this.frame();}
  startLevel(level){this.cpu.write(this.game+0x268,level-1);this.keyDown(113);}
- speed(command){this.cpu.run(0x40ea54,this.game,[command]);}
- save(){this.cpu.run(0x40d177,this.game);return this.files.get('ship233.mine');}
- load(){if(!this.files.has('ship233.mine'))return false;this.cpu.run(0x40dc35,this.game);return true;}
+ speed(command){const old=this.cpu.read(this.game+0x308);this.cpu.run(0x40ea54,this.game,[command]);this.tuning.rescaleProtection(old,this.cpu.read(this.game+0x308));}
+ save(){const bytes=this.tuning.save(()=>{this.cpu.run(0x40d177,this.game);return this.files.get('ship233.mine');});this.files.set('ship233.mine',bytes);this.persistFiles();return bytes;}
+ persistFiles(){const data={};for(const [name,bytes] of this.files)data[name]=btoa(String.fromCharCode(...bytes));try{localStorage.setItem('ship233-files',JSON.stringify(data));}catch{}}
+ load(){const bytes=this.files.get('ship233.mine');if(!bytes)return false;const data=this.tuning.decode(bytes);if(data)this.files.set('ship233.mine',new TextEncoder().encode(data.native));else if(this.tuning.config.enabled)this.tuning.apply({...this.tuning.config,enabled:false});try{this.cpu.run(0x40dc35,this.game);}finally{this.files.set('ship233.mine',bytes);}if(data)this.tuning.restore(data);else{try{const cfg=JSON.parse(localStorage.getItem('ship233-settings')||'{}');cfg.gameplay=this.tuning.config;localStorage.setItem('ship233-settings',JSON.stringify(cfg));}catch{}}this.persistFiles();return true;}
  stopAudio(){for(const voice of this.voices.values())try{voice.stop();}catch{}this.voices.clear();}
  state(){const c=this.cpu,G=this.game;let enemies=0;for(let i=0,a=c.read(G+0x1a0);i<20;i++)enemies+=+(c.read(a+i*44+16)!==0);return {level:c.read(G+0x1dc)+1,x:c.read(G+0x224),y:c.read(G+0x228),paused:c.read(G+0x1d8)===1,player:!!c.read(G+0x254),lives:c.read(G+0x21c),bombs:c.read(G+0x1f0),capacity:c.read(G+0x2f4),nukes:c.read(G+0x3b0),score:c.read(G+0x3ac),enemies,progress:Math.min(99,Math.floor(c.read(G+0x1ec)*100/((c.read(G+0x1dc)+6)*5))),step:c.read(G+0x308),stats:this.stats};}
  async audioReady(){if(!this.audio){this.audio=new AudioContext();this.audioLoading=Promise.all(Object.entries(SHIP_AUDIO).map(async([id,b64])=>{const raw=Uint8Array.from(atob(b64),x=>x.charCodeAt(0));this.buffers.set(+id,await this.audio.decodeAudioData(raw.buffer));}));}await this.audio.resume();await this.audioLoading;}
