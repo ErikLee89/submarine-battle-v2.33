@@ -161,4 +161,4 @@ python tools/test_start_level.py
 75c0ece3e40e85ca6dfd363ceecdf9cd5fd5ef48325c20e7cddb52ec082abbaf
 ```
 
-仓库未包含原 EXE。原游戏、图片与声音的权利归原权利人；本仓库用于版本研究与浏览器复刻，未另行授予原版素材的授权。
+原版程序压缩包：[ship_V2.33.zip](docs/ship_V2.33.zip)。原游戏、图片与声音的权利归原权利人；本仓库用于版本研究与浏览器复刻，未另行授予原版素材的授权。
