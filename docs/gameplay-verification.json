@@ -1,0 +1,556 @@
+[
+  {
+    "stage": 1,
+    "result": "pass",
+    "state": {
+      "level": 1,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 530,
+      "enemies": 9,
+      "progress": 93,
+      "step": 31,
+      "stats": {
+        "frames": 702,
+        "draws": 9204
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 2,
+    "result": "pass",
+    "state": {
+      "level": 2,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 470,
+      "enemies": 9,
+      "progress": 85,
+      "step": 31,
+      "stats": {
+        "frames": 1402,
+        "draws": 20249
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 3,
+    "result": "pass",
+    "state": {
+      "level": 3,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 800,
+      "enemies": 9,
+      "progress": 60,
+      "step": 31,
+      "stats": {
+        "frames": 2102,
+        "draws": 31571
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 4,
+    "result": "pass",
+    "state": {
+      "level": 4,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 750,
+      "enemies": 2,
+      "progress": 55,
+      "step": 31,
+      "stats": {
+        "frames": 2802,
+        "draws": 41878
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 5,
+    "result": "pass",
+    "state": {
+      "level": 5,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 1190,
+      "enemies": 3,
+      "progress": 58,
+      "step": 31,
+      "stats": {
+        "frames": 3502,
+        "draws": 52215
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 6,
+    "result": "pass",
+    "state": {
+      "level": 6,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 910,
+      "enemies": 3,
+      "progress": 54,
+      "step": 31,
+      "stats": {
+        "frames": 4202,
+        "draws": 62162
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 7,
+    "result": "pass",
+    "state": {
+      "level": 7,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 660,
+      "enemies": 5,
+      "progress": 50,
+      "step": 31,
+      "stats": {
+        "frames": 4902,
+        "draws": 71373
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 8,
+    "result": "pass",
+    "state": {
+      "level": 8,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 3750,
+      "enemies": 7,
+      "progress": 56,
+      "step": 31,
+      "stats": {
+        "frames": 5602,
+        "draws": 83800
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 9,
+    "result": "pass",
+    "state": {
+      "level": 9,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 2450,
+      "enemies": 5,
+      "progress": 48,
+      "step": 31,
+      "stats": {
+        "frames": 6302,
+        "draws": 95994
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 10,
+    "result": "pass",
+    "state": {
+      "level": 10,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 2280,
+      "enemies": 5,
+      "progress": 50,
+      "step": 31,
+      "stats": {
+        "frames": 7002,
+        "draws": 107445
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 11,
+    "result": "pass",
+    "state": {
+      "level": 11,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 2,
+      "score": 8500,
+      "enemies": 4,
+      "progress": 46,
+      "step": 31,
+      "stats": {
+        "frames": 7702,
+        "draws": 120726
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 12,
+    "result": "pass",
+    "state": {
+      "level": 12,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 10490,
+      "enemies": 4,
+      "progress": 37,
+      "step": 31,
+      "stats": {
+        "frames": 8402,
+        "draws": 134890
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 13,
+    "result": "pass",
+    "state": {
+      "level": 13,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 7350,
+      "enemies": 2,
+      "progress": 42,
+      "step": 31,
+      "stats": {
+        "frames": 9102,
+        "draws": 150342
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 14,
+    "result": "pass",
+    "state": {
+      "level": 14,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 30540,
+      "enemies": 4,
+      "progress": 44,
+      "step": 31,
+      "stats": {
+        "frames": 9802,
+        "draws": 164127
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 15,
+    "result": "pass",
+    "state": {
+      "level": 15,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 12950,
+      "enemies": 7,
+      "progress": 47,
+      "step": 31,
+      "stats": {
+        "frames": 10502,
+        "draws": 181289
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 16,
+    "result": "pass",
+    "state": {
+      "level": 16,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 13370,
+      "enemies": 3,
+      "progress": 39,
+      "step": 31,
+      "stats": {
+        "frames": 11202,
+        "draws": 196559
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 17,
+    "result": "pass",
+    "state": {
+      "level": 17,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 24440,
+      "enemies": 5,
+      "progress": 47,
+      "step": 31,
+      "stats": {
+        "frames": 11902,
+        "draws": 214758
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 18,
+    "result": "pass",
+    "state": {
+      "level": 18,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 19780,
+      "enemies": 5,
+      "progress": 46,
+      "step": 31,
+      "stats": {
+        "frames": 12602,
+        "draws": 233495
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 19,
+    "result": "pass",
+    "state": {
+      "level": 19,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 27450,
+      "enemies": 3,
+      "progress": 47,
+      "step": 31,
+      "stats": {
+        "frames": 13302,
+        "draws": 254036
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 20,
+    "result": "pass",
+    "state": {
+      "level": 20,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 4,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 29130,
+      "enemies": 3,
+      "progress": 51,
+      "step": 31,
+      "stats": {
+        "frames": 14002,
+        "draws": 275376
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "stage": 21,
+    "result": "pass",
+    "state": {
+      "level": 21,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 5,
+      "capacity": 5,
+      "nukes": 1,
+      "score": 29080,
+      "enemies": 3,
+      "progress": 52,
+      "step": 31,
+      "stats": {
+        "frames": 14702,
+        "draws": 297882
+      }
+    },
+    "saveLength": 2109,
+    "stack": "f00000",
+    "fpu": []
+  },
+  {
+    "case": "stage21-wrap",
+    "result": "pass"
+  },
+  {
+    "case": "native-score-persistence",
+    "result": "pass"
+  }
+]

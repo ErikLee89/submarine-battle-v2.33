@@ -1,0 +1,14 @@
+{
+  "desktop": "1440x900",
+  "mobile": [
+    "390x700",
+    "320x700"
+  ],
+  "helpPauseRestoration": "pass",
+  "stageSelection": "pass",
+  "saveRestore": "pass",
+  "pageErrors": [],
+  "audioDecoded": 7,
+  "ChineseName": "pass",
+  "result": "pass"
+}

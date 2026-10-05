@@ -1,0 +1,170 @@
+[
+  {
+    "level": 1,
+    "services": 38,
+    "state": {
+      "level": 1,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 10,
+      "enemies": 6,
+      "progress": 23,
+      "step": 31,
+      "stats": {
+        "frames": 211,
+        "draws": 1831
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 3,
+    "services": 41,
+    "state": {
+      "level": 3,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 3,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 150,
+      "enemies": 3,
+      "progress": 17,
+      "step": 31,
+      "stats": {
+        "frames": 421,
+        "draws": 3972
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 5,
+    "services": 36,
+    "state": {
+      "level": 5,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 4,
+      "bombs": 0,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 290,
+      "enemies": 3,
+      "progress": 10,
+      "step": 31,
+      "stats": {
+        "frames": 631,
+        "draws": 5709
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 10,
+    "services": 44,
+    "state": {
+      "level": 10,
+      "x": 268,
+      "y": 30,
+      "paused": false,
+      "player": true,
+      "lives": 4,
+      "bombs": 2,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 30,
+      "enemies": 8,
+      "progress": 10,
+      "step": 31,
+      "stats": {
+        "frames": 841,
+        "draws": 7580
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 11,
+    "services": 48,
+    "state": {
+      "level": 11,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 2,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 280,
+      "enemies": 5,
+      "progress": 13,
+      "step": 31,
+      "stats": {
+        "frames": 1051,
+        "draws": 10021
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 16,
+    "services": 61,
+    "state": {
+      "level": 16,
+      "x": 268,
+      "y": 180,
+      "paused": false,
+      "player": true,
+      "lives": 5,
+      "bombs": 2,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 1200,
+      "enemies": 3,
+      "progress": 13,
+      "step": 31,
+      "stats": {
+        "frames": 1261,
+        "draws": 13196
+      }
+    },
+    "result": "pass"
+  },
+  {
+    "level": 21,
+    "services": 43,
+    "state": {
+      "level": 21,
+      "x": 4294967196,
+      "y": 180,
+      "paused": false,
+      "player": false,
+      "lives": 4,
+      "bombs": 0,
+      "capacity": 5,
+      "nukes": 0,
+      "score": 410,
+      "enemies": 8,
+      "progress": 9,
+      "step": 31,
+      "stats": {
+        "frames": 1471,
+        "draws": 16348
+      }
+    },
+    "result": "pass"
+  }
+]

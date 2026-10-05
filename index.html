@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>潜艇大战 V2.33</title>
+<link rel="icon" href="favicon.ico">
+<style>
+.panel{width:min(640px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #9bafb9;border-radius:8px;background:#f7fafb;color:#263d4b;overflow:hidden;box-shadow:0 24px 80px #0007}
+.panel[open]{display:flex;flex-direction:column}.panel::backdrop{background:#03131ccc}.panel h2{margin:0;font-size:22px;color:#fff;background:#123f54;padding:16px 22px}.panel .content{overflow:auto;padding:20px 22px;min-height:0}.panel .footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 22px;border-top:1px solid #d7e2e7;background:#edf3f6;flex-wrap:wrap}.panel button{border:1px solid #9bafb9;border-radius:4px;padding:8px 14px;background:white}.panel .primary{background:#145d76;color:white}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-grid label{display:flex;flex-direction:column;gap:6px;font-weight:700}.form-grid input,.form-grid select{width:100%;padding:8px;background:#fff;border:1px solid #b9cbd4;border-radius:4px;color:#183f54;font:14px inherit}.form-grid .check{flex-direction:row;align-items:center}.form-grid .check input{width:auto}.panel p{line-height:1.65}.key-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key-fields label{font-size:13px}.key-fields input{width:100%;text-align:center;padding:7px;background:#fff;border:1px solid #b9cbd4;border-radius:4px}.settings-group{border:0;margin:18px 0 0;padding:0}.settings-group legend{font-weight:700;color:#145d76;margin-bottom:9px}.score-table{width:100%;border-collapse:collapse;font-size:13px}.score-table th{text-align:left;background:#e4edf2;color:#145d76}.score-table th,.score-table td{padding:9px 6px;border-bottom:1px solid #d7e2e7}.toast{color:#ffd884;text-align:center;margin:0;font-size:12px;min-height:18px}.bottom{flex-wrap:wrap}.touch{flex-wrap:wrap}.touch button{min-width:46px;padding:4px 8px}@media(max-width:420px){.form-grid{grid-template-columns:1fr}.key-fields{grid-template-columns:repeat(2,1fr)}.panel .content{padding:16px}.score-table th,.score-table td{padding:6px 3px;font-size:11px}}
+
+*{box-sizing:border-box}
+body{margin:0;background:#10232d;color:#c6d9e2;font:14px "Microsoft YaHei",sans-serif;min-height:100dvh;display:flex;justify-content:center}
+main{width:100%;height:100dvh;padding:clamp(8px,1.5vw,24px);display:flex;flex-direction:column;gap:8px}
+.window{flex:1;min-height:0;display:flex;flex-direction:column;border:2px solid #d4d0c8;background:#d4d0c8;box-shadow:0 10px 32px #0005}
+.title{flex:none;height:29px;background:linear-gradient(90deg,#0a246a,#7bafd0);color:white;display:flex;align-items:center;padding:0 9px;font-weight:bold;gap:7px}
+.title img{width:18px;height:18px}
+.menu{flex:none;display:flex;align-items:center;min-height:34px;gap:2px;padding:3px 5px;color:#111;flex-wrap:wrap}
+button{font:13px "Microsoft YaHei",sans-serif;color:#111;background:#d4d0c8;border:1px solid transparent;padding:4px 10px;cursor:pointer;white-space:nowrap}
+button:hover,button:focus-visible{border-color:#fff #808080 #808080 #fff;outline:none}
+button:active{border-color:#808080 #fff #fff #808080}
+#fullscreen{margin-left:auto}
+.arena{flex:1;min-height:0;overflow:hidden;background:#081820;display:flex;align-items:center;justify-content:center}
+canvas{display:block;flex:none;image-rendering:pixelated;touch-action:none;outline:none;background:#00ffff}
+.bottom{flex:none;display:flex;justify-content:space-between;gap:8px;color:#1b2328;font-size:12px;line-height:18px;padding:4px 8px;border:1px inset #eee;font-variant-numeric:tabular-nums}
+.keys{text-align:center;font-size:12px;color:#abc0ca;margin:0;line-height:20px;flex:none}
+kbd{font:inherit;color:#eef5f7}
+.touch{display:none;justify-content:space-between;gap:8px;flex:none}
+.touch button{min-width:60px;min-height:44px;background:#d4d0c8;border:2px outset #eee;touch-action:none}
+#instructions{width:min(780px,calc(100vw - 24px));max-height:calc(100dvh - 32px);color:#263d4b;background:#f7fafb;border:1px solid #9bafb9;border-radius:10px;padding:0;overflow:hidden;box-shadow:0 24px 80px #0007;line-height:1.6}
+#instructions[open]{display:flex;flex-direction:column}
+#instructions::backdrop{background:#03131ccc}
+.help-header{flex:none;background:#123f54;color:#fff;padding:20px 26px}
+.help-header h2{font-size:24px;line-height:1.3;margin:0 0 6px;font-weight:750;letter-spacing:1px}
+.help-header p{margin:0;color:#d8ebf3;font-size:14px}
+.help-content{min-height:0;overflow:auto;padding:22px 26px;font-size:15px;scrollbar-gutter:stable}
+.help-section+.help-section{margin-top:24px}
+.help-section h3{color:#12485f;font-size:17px;margin:0 0 12px;font-weight:750;display:flex;align-items:center;gap:9px}
+.help-section h3::before{content:"";width:4px;height:18px;background:#16859e;border-radius:2px}
+.help-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+.help-controls>div{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #dbe5e9;border-radius:6px;background:white;min-height:65px}
+.help-controls dt{flex:none;min-width:70px;display:flex;gap:4px;align-items:center}
+.help-controls dd{margin:0;line-height:1.45}
+.help-controls dd strong{display:block;color:#163e52;font-size:14px}
+.help-controls dd span{display:block;color:#526875;font-size:12px;margin-top:2px}
+#instructions kbd{display:inline-block;min-width:27px;padding:3px 7px;text-align:center;font:bold 13px Consolas,"Microsoft YaHei",monospace;color:#183f54;background:#eef4f7;border:1px solid #b9cbd4;border-bottom:3px solid #9cb5c1;border-radius:4px;white-space:nowrap}
+.help-pickups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.help-pickup{border:1px solid;border-radius:6px;padding:12px 14px}
+.help-pickup h4{font-size:14px;margin:0 0 4px;font-weight:700}
+.help-pickup strong{font-size:24px;line-height:1.3;font-weight:800;display:block}
+.help-pickup p{margin:4px 0 0;font-size:13px}
+.help-yellow{color:#78510a;background:#fff5d6;border-color:#e5c466}
+.help-red{color:#a62b3b;background:#fff0f1;border-color:#eab8bf}
+.help-nuke{color:#0d6072;background:#e4f7fa;border-color:#9cced8}
+.help-note{margin:10px 0 0;font-size:13px;color:#526875}
+.help-note strong{color:#9e3543;font-weight:750}
+.help-stages{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0;padding:0}
+.help-stages li{background:#edf3f6;border-radius:5px;padding:9px 12px}
+.help-stages strong{display:block;color:#145b75;font-size:13px;margin-bottom:2px}
+.help-stages span{display:block;font-size:14px;color:#314c5a}
+.help-god{display:flex;align-items:center;gap:12px;margin:10px 0 0;padding:10px 12px;background:#173f54;color:#e5f2f7;border-radius:5px;font-size:13px}
+.help-god strong{color:#ffd884;white-space:nowrap;font-size:14px}
+.help-footer{flex:none;display:flex;justify-content:flex-end;padding:12px 26px;background:#edf3f6;border-top:1px solid #d7e2e7}
+#closeHelp{background:#145d76;color:white;font-weight:700;font-size:14px;border:1px solid #104b60;border-radius:5px;min-width:110px;padding:9px 20px}
+#closeHelp:hover{background:#0e4b62}
+#closeHelp:focus-visible{outline:3px solid #e5af43;outline-offset:3px}
+@media(max-width:650px){.help-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.help-header{padding:17px 18px}.help-content{padding:18px}.help-footer{padding:12px 18px}.help-header h2{font-size:22px}.help-stages{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.help-controls>div{flex-direction:column;align-items:flex-start;gap:6px;padding:10px}.help-controls dt{min-width:0}#instructions kbd{padding:3px 5px;min-width:24px;font-size:12px}.help-pickups{gap:6px}.help-pickup{padding:10px 8px}.help-pickup strong{font-size:22px}.help-pickup h4{font-size:13px}.help-god{align-items:flex-start;flex-direction:column;gap:2px}}
+#error{color:#ffe1bb;text-align:center;white-space:pre-wrap;margin:0;flex:none}
+main:fullscreen{background:#10232d;padding:8px}
+@media(pointer:coarse){.touch{display:flex}}
+@media(max-width:600px){main{padding:4px;gap:4px}.menu{gap:0;padding:2px}.menu button{padding:5px 6px;font-size:12px}.bottom{font-size:11px;padding:3px 5px}.keys{font-size:11px;line-height:18px}.title{height:27px}}
+</style>
+</head>
+<body>
+<main id="app">
+  <div class="window">
+    <div class="title"><img src="favicon.ico" alt="">潜艇大战 V2.33</div>
+    <nav class="menu" aria-label="游戏操作">
+      <button id="start">开始 F2</button><button id="pause">暂停 F3</button><button id="sound">音效 F5</button><button id="help">游戏说明 F1</button><button id="save">存档</button><button id="load">读档</button><button id="settings">设置 F4</button><button id="scores">英雄榜 F9</button><button id="quit">结束</button><button id="fullscreen">全屏</button>
+    </nav>
+    <div class="arena"><canvas id="game" width="600" height="450" aria-label="潜艇大战游戏画面" tabindex="0"></canvas></div>
+    <div class="bottom"><span id="status" role="status">正在载入…</span><span id="level">第 1 关</span></div>
+  </div>
+  <p class="keys"><kbd>← →</kbd> 移动　<kbd>空格 / Z / X</kbd> 投弹　<kbd>Enter</kbd> 核武器　<kbd>F3</kbd> 暂停　<kbd>F2</kbd> 重新开始</p>
+  <div class="touch"><div><button data-key="37" aria-label="向左移动">◀</button><button data-key="39" aria-label="向右移动">▶</button></div><div><button data-key="90">左投弹</button><button data-key="32">投弹</button><button data-key="38">↑ 发射</button><button data-key="13">核弹</button></div></div>
+  <p id="message" class="toast" role="status"></p>
+  <p id="error" hidden></p>
+</main>
+<dialog id="instructions" aria-labelledby="helpTitle" aria-describedby="helpGoal">
+  <header class="help-header"><h2 id="helpTitle">游戏说明</h2><p id="helpGoal">移动战舰，投弹击毁海底敌人，同时躲避敌人的攻击。</p></header>
+  <div class="help-content">
+    <section class="help-section" aria-labelledby="controlsTitle">
+      <h3 id="controlsTitle">操作键位</h3>
+      <dl class="help-controls">
+        <div><dt><kbd>←</kbd><kbd>→</kbd></dt><dd><strong>左右移动</strong><span>也可用鼠标移动、单击投弹</span></dd></div>
+        <div><dt><kbd>Space</kbd></dt><dd><strong>中间投弹</strong></dd></div>
+        <div><dt><kbd>Z</kbd><kbd>X</kbd></dt><dd><strong>单侧投弹</strong><span>Z 左侧 / X 右侧</span></dd></div>
+        <div><dt><kbd>Enter</kbd></dt><dd><strong>投放核武器</strong><span>需要先收集核武器</span></dd></div>
+        <div><dt><kbd>↑</kbd></dt><dd><strong>向上发射</strong><span>第 11 关起可用</span></dd></div>
+        <div><dt><kbd>F3</kbd></dt><dd><strong>暂停 / 继续</strong></dd></div>
+        <div><dt><kbd>F2</kbd></dt><dd><strong>重新开始</strong></dd></div>
+        <div><dt><kbd>F5</kbd></dt><dd><strong>音效开关</strong></dd></div>
+        <div><dt><kbd>F8</kbd></dt><dd><strong>全屏显示</strong></dd></div>
+      </dl>
+      <p class="help-note"><kbd>Ctrl S</kbd> 存档 · <kbd>Ctrl L</kbd> 读档 · <kbd>Ctrl M</kbd> 鼠标开关。可在设置中调整键位。</p>
+    </section>
+    <section class="help-section" aria-labelledby="pickupsTitle">
+      <h3 id="pickupsTitle">补给与机会</h3>
+      <div class="help-pickups">
+        <article class="help-pickup help-yellow"><h4>进攻机会</h4><strong>+1 / +2</strong><p>增加剩余机会，部分补给同时奖励得分</p></article>
+        <article class="help-pickup help-red"><h4>深水炸弹</h4><strong>+1</strong><p>增加可同时投放的炸弹数量</p></article>
+        <article class="help-pickup help-nuke"><h4>核武器</h4><strong>收集后投放</strong><p>按 Enter 使用，摧毁场上敌人</p></article>
+      </div>
+      <p class="help-note">还会出现<strong>金钟罩、定子、标尺和速度升级</strong>等补给。标尺生效时，可按数字键直接到达相应位置。注意会锁住舰艇或取消保护的负面补给。</p>
+    </section>
+    <section class="help-section" aria-labelledby="stagesTitle">
+      <h3 id="stagesTitle">关卡与战场</h3>
+      <ol class="help-stages">
+        <li><strong>第 1–10 关</strong><span>海面战场</span></li>
+        <li><strong>第 11–21 关</strong><span>加入空中战场与向上发射</span></li>
+        <li><strong>通过第 21 关</strong><span>进入下一轮</span></li>
+      </ol>
+      <p class="help-note">敌人、补给、碰撞、得分和过关条件沿用 V2.33 原版规则。设置中的“从此关开始”会重新开始一局。</p>
+    </section>
+  </div>
+  <footer class="help-footer"><button id="closeHelp">知道了</button></footer>
+</dialog>
+<dialog id="options" class="panel" aria-labelledby="optionsTitle">
+<h2 id="optionsTitle">游戏设置</h2><div class="content">
+<div class="form-grid"><label>起始关卡<select id="startLevel"></select></label><label>游戏速度<select id="speed"><option value="31">原版默认 · 31 毫秒</option></select></label><label>英雄榜名称（最多 6 个汉字）<input id="playerName" maxlength="12" value="Player" autocomplete="nickname"></label><label class="check"><input id="useMouse" type="checkbox" checked>使用鼠标控制</label></div>
+<fieldset class="settings-group"><legend>键位 · 点击后按下新按键</legend><div class="key-fields"><label>左移<input data-offset="620" readonly></label><label>右移<input data-offset="624" readonly></label><label>左侧投弹<input data-offset="628" readonly></label><label>中间投弹<input data-offset="632" readonly></label><label>右侧投弹<input data-offset="636" readonly></label><label>向上发射<input data-offset="640" readonly></label><label>核武器<input data-offset="772" readonly></label></div></fieldset>
+<fieldset class="settings-group"><legend>战场颜色</legend><div class="form-grid"><label>天空上端<input type="color" data-color="660"></label><label>天空下端<input type="color" data-color="664"></label><label>海面上端<input type="color" data-color="656"></label><label>海底下端<input type="color" data-color="652"></label></div></fieldset>
+<p class="help-note">起始关卡在“从此关开始”时生效。存档保存在此浏览器中，也可导出到文件。</p></div>
+<div class="footer"><button id="exportSave">导出存档</button><button id="importSave">导入存档</button><button id="applySettings" class="primary">应用设置</button><button id="startSelected">从此关开始</button><button data-close="options">关闭</button></div></dialog>
+<dialog id="heroes" class="panel" aria-labelledby="heroesTitle"><h2 id="heroesTitle">英雄榜</h2><div class="content"><table class="score-table"><thead><tr><th>名次</th><th>名称</th><th>得分</th><th>过关</th><th>消灭</th><th>日期</th></tr></thead><tbody id="scoreRows"></tbody></table></div><div class="footer"><button data-close="heroes" class="primary">关闭</button></div></dialog>
+<input id="saveFile" type="file" accept=".mine" hidden>
+<script src="resources.js"></script><script src="audio-data.js"></script><script src="machine.js"></script><script src="cpu.js"></script><script src="bridge.js"></script><script src="game.js"></script>
+</body>
+</html>
